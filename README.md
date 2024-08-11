@@ -20,7 +20,7 @@ go build .
 
 - Steps : 
   - First Initailize the Cache with the capacity, capacity should be greater than 0
-  - Add key-value pairs to the cache;
+  - Add key-value-expiry pairs to the cache; expiry should be greater than current time
   - after adding the key-value pairs, websocket will notify the frontend about the changes in the cache
   - use get cache endpoint to get the value of the key
   - use delete cache endpoint to delete the key from the cache
