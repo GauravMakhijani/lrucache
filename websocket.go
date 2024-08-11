@@ -2,10 +2,11 @@ package main
 
 import (
 	"log"
-	app "lrucache/internal"
+
 	"net/http"
 	"sync"
 
+	app "github.com/GauravMakhijani/lrucache/internal"
 	"github.com/gorilla/websocket"
 )
 

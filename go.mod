@@ -1,4 +1,4 @@
-module lrucache
+module github.com/GauravMakhijani/lrucache
 
 go 1.22.1
 

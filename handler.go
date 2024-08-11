@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
-	app "lrucache/internal"
+
 	"net/http"
 
+	app "github.com/GauravMakhijani/lrucache/internal"
 	"github.com/gorilla/mux"
 )
 

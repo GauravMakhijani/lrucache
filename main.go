@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-	app "lrucache/internal"
 	"net/http"
 
+	app "github.com/GauravMakhijani/lrucache/internal"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
