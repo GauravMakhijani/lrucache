@@ -3,22 +3,48 @@ package main
 import (
 	"fmt"
 	"log"
+	app "lrucache/internal"
 	"net/http"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
-func GetValueWithKeyHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	w.WriteHeader(http.StatusOK)
-	spew.Dump(vars)
-
+type errorResponse struct {
+	Error string `json:"error"`
 }
 
 func main() {
+
+	// create a new router
 	r := mux.NewRouter()
-	r.HandleFunc("/value/{key}", GetValueWithKeyHandler).Methods(http.MethodGet)
+
+	// create a new cache service
+	cacheService := app.ProvideNewCache()
+
+	// create a new websocket server
+	server := newWebsocketServer(cacheService)
+
+	// handle websocket connection
+	r.HandleFunc("/ws", server.websocketHandler)
+
+	// handle http requests
+	r.HandleFunc("/cache/{key}", GetValueWithKeyHandler(cacheService)).Methods(http.MethodGet)
+	r.HandleFunc("/", InsertValueHandler(cacheService)).Methods(http.MethodPost)
+	r.HandleFunc("/initialize", InitializeCacheHandler(cacheService)).Methods(http.MethodPost)
+	r.HandleFunc("/cache/{key}", DeleteKeyHandler(cacheService)).Methods(http.MethodDelete)
+	r.HandleFunc("/capacity", GetCacheCapacityHandler(cacheService)).Methods(http.MethodGet)
+
+	// cors handler
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodDelete},
+	})
+
+	handler := c.Handler(r)
+
 	fmt.Println("server started at port :3000")
-	log.Fatal(http.ListenAndServe(":3000", r))
+	log.Fatal(http.ListenAndServe(":3001", handler))
+
 }
