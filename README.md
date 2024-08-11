@@ -15,7 +15,6 @@ go build .
 
 ### How to use
 ---
-- Use the following endpoints to interact with the LRU Cache
 - Use Frontend to interact with the LRU Cache
   - [Frontend](https://github.com/GauravMakhijani/LRU-cache-frontend)
 
